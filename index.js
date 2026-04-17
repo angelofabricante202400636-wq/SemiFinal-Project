@@ -12,6 +12,11 @@ app.use(bodyParser.json());
 // In-memory reservations store
 let reservations = [];
 
+// --- Root Route ---
+app.get('/', (req, res) => {
+  res.send('Reservation Operations Manager API is running!');
+});
+
 // --- API Endpoints ---
 
 // GET /reservations - Get all reservations
