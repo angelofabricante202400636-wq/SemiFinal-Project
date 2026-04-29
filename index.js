@@ -5,26 +5,26 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+
 app.use(cors());
 app.use(bodyParser.json());
 
-// In-memory reservations store
+
 let reservations = [];
 
-// --- Root Route ---
+
 app.get('/', (req, res) => {
   res.send('Reservation Operations Manager API is running!');
 });
 
 // --- API Endpoints ---
 
-// GET /reservations - Get all reservations
+
 app.get('/reservations', (req, res) => {
   res.json(reservations);
 });
 
-// GET /reservations/:id - Get reservation by ID
+
 app.get('/reservations/:id', (req, res) => {
   const { id } = req.params;
   const reservation = reservations.find(r => r.id === id);
@@ -34,16 +34,16 @@ app.get('/reservations/:id', (req, res) => {
   res.json(reservation);
 });
 
-// POST /reservations - Create a new reservation
+
 app.post('/reservations', (req, res) => {
   const { id, name, email, date, time, service } = req.body;
 
-  // Validate fields
+  
   if (!id || !name || !email || !date || !time || !service) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Check duplicate ID
+
   if (reservations.some(r => r.id === id)) {
     return res.status(400).json({ message: 'ID already exists' });
   }
@@ -54,7 +54,7 @@ app.post('/reservations', (req, res) => {
   res.status(201).json(newReservation);
 });
 
-// PUT /reservations/:id - Update reservation
+
 app.put('/reservations/:id', (req, res) => {
   const { id } = req.params;
   const reservation = reservations.find(r => r.id === id);
@@ -63,7 +63,7 @@ app.put('/reservations/:id', (req, res) => {
     return res.status(404).json({ message: 'Reservation not found' });
   }
 
-  // Partial update
+ 
   const { name, email, date, time, service } = req.body;
   if (name) reservation.name = name;
   if (email) reservation.email = email;
@@ -74,7 +74,7 @@ app.put('/reservations/:id', (req, res) => {
   res.json(reservation);
 });
 
-// DELETE /reservations/:id - Delete reservation
+
 app.delete('/reservations/:id', (req, res) => {
   const { id } = req.params;
   const index = reservations.findIndex(r => r.id === id);
@@ -87,7 +87,7 @@ app.delete('/reservations/:id', (req, res) => {
   res.json({ message: 'Reservation deleted', deleted });
 });
 
-// Start server
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
